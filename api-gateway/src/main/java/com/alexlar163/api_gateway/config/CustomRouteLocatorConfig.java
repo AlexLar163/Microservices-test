@@ -1,0 +1,23 @@
+package com.alexlar163.api_gateway.config;
+
+import org.springframework.cloud.gateway.route.RouteLocator;
+import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class CustomRouteLocatorConfig {
+    @Bean
+    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+        // adding 2 rotes to first microservice as we need to log request body if method is POST
+        return builder.routes()
+                .route("authentication-server",r -> r.path("/auth/**")
+                        .uri("http://localhost:8090"))
+                .route("customer-service",r -> r.path("/customer/**")
+//                        .and().method("POST")
+//                        .and().readBody(Student.class, s -> true).filters(f -> f.filters(requestFilter, authFilter))
+//                        .and().readBody(Student.class, s -> true).filters(f -> f.filters(requestFilter, authFilter))
+                        .uri("http://localhost:8091"))
+                .build();
+    }
+}

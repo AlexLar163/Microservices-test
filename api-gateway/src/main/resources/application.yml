@@ -15,6 +15,9 @@ spring:
         - id: customer-service
           uri: http://localhost:8091
           predicates:
-            - Path=/costumer/**
+            - Path=/customer/**
 server:
   port: 8765
+jwt:
+  secret: m/FWg06dqLEgghx9AE2dpHUedrsn+eSneJdcg/QSuuY=
+  expiration: 3600000

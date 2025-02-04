@@ -34,7 +34,7 @@ public class JwtFilter implements GlobalFilter {
 
         // Obtener token del header Authorization
         String token = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-        if (token == null || !token.startsWith("Bearer ")) {
+        if (!token.startsWith("Bearer ")) {
             logger.warn("Token is missing or incorrect format");
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
@@ -42,7 +42,6 @@ public class JwtFilter implements GlobalFilter {
 
         // Extraer JWT sin "Bearer "
         String jwtToken = token.substring(7);
-
         // Validar token
         if (!jwtUtil.validateToken(jwtToken)) {
             logger.warn("Invalid token");

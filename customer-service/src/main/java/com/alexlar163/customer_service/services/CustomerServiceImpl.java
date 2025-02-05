@@ -16,10 +16,12 @@ public class CustomerServiceImpl implements CustomerServiceInterface {
 
     private final CustomerRepository customerRepository;
     private final PersonRepository personRepository;
+    private final CreateAccountProducerService createAccountProducerService;
 
-    public CustomerServiceImpl(CustomerRepository customerRepository, PersonRepository personRepository) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, PersonRepository personRepository, CreateAccountProducerService createAccountProducerService) {
         this.customerRepository = customerRepository;
         this.personRepository = personRepository;
+        this.createAccountProducerService = createAccountProducerService;
     }
 
     @Override
@@ -39,8 +41,10 @@ public class CustomerServiceImpl implements CustomerServiceInterface {
         person = personRepository.save(person);
 
         customer.setPerson(person);
+        CustomerEntity result = customerRepository.save(customer);
+        createAccountProducerService.createAccountSend(customer);
 
-        return customerRepository.save(customer);
+        return result;
     }
 
     @Transactional

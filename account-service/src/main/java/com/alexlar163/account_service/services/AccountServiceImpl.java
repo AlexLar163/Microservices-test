@@ -3,11 +3,11 @@ package com.alexlar163.account_service.services;
 import com.alexlar163.account_service.entities.AccountEntity;
 import com.alexlar163.account_service.repositories.AccountRepository;
 import com.alexlar163.account_service.services.interfaces.AccountServiceInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class AccountServiceImpl implements AccountServiceInterface {
@@ -30,6 +30,12 @@ public class AccountServiceImpl implements AccountServiceInterface {
 
     @Override
     public AccountEntity save(AccountEntity account) {
+        Random random = new Random();
+        String accountNumber = String.valueOf(100000000 + random.nextInt(900000000));
+        account.setAccountNumber(accountNumber);
+        account.setBalance(0.0);
+        account.setStatus("active");
+
         return accountRepository.save(account);
     }
 

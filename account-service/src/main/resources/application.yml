@@ -11,13 +11,12 @@ spring:
       ddl-auto: update
     show-sql: true
   kafka:
-    bootstrap-servers: kafka:9092
+    bootstrap-servers: localhost:9092
     consumer:
-      group-id: transaction-group
+      group-id: account-service
       auto-offset-reset: earliest
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        spring.json.trusted.packages: "com.alexlar163.customer_service.dto"
 
 server:
   port: 8092

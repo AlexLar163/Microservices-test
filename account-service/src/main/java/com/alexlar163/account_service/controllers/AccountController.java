@@ -31,7 +31,7 @@ public class AccountController {
         return account.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping( "/new")
     public AccountEntity createAccount(@RequestBody AccountEntity account) {
         return accountService.save(account);
     }

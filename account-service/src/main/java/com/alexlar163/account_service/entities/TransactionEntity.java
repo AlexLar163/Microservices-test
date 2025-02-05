@@ -13,12 +13,9 @@ public class TransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String accountNumber;
-    private String accountType;
-    private Double initialBalance;
-    private String status;
-    private String clientName;
-    private String clientId;
+    @OneToOne
+    @JoinColumn(name = "id", nullable = false, unique = true)
+    private AccountEntity account;
     private LocalDate date;
     private String transactionType;
     private Double amount;

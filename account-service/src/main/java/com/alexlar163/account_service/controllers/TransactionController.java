@@ -1,6 +1,7 @@
 package com.alexlar163.account_service.controllers;
 
 import com.alexlar163.account_service.entities.TransactionEntity;
+import com.alexlar163.account_service.exceptions.InsufficientBalanceException;
 import com.alexlar163.account_service.services.TransactionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +33,13 @@ public class TransactionController {
     }
 
     @PostMapping
-    public TransactionEntity createTransaction(@RequestBody TransactionEntity transaction) {
-        return transactionService.save(transaction);
+    public ResponseEntity<?> createTransaction(@RequestBody TransactionEntity transaction) {
+        try {
+            TransactionEntity createdTransaction = transactionService.save(transaction);
+            return ResponseEntity.ok(createdTransaction);
+        } catch (InsufficientBalanceException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")

@@ -1,8 +1,13 @@
 package com.alexlar163.account_service.services;
 
+import com.alexlar163.account_service.entities.AccountEntity;
 import com.alexlar163.account_service.entities.TransactionEntity;
+import com.alexlar163.account_service.exceptions.InsufficientBalanceException;
+import com.alexlar163.account_service.repositories.AccountRepository;
 import com.alexlar163.account_service.repositories.TransactionRepository;
 import com.alexlar163.account_service.services.interfaces.TransactionServiceInterface;
+import jakarta.transaction.Transaction;
+import jakarta.ws.rs.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +18,12 @@ import java.util.Optional;
 public class TransactionServiceImpl implements TransactionServiceInterface {
 
     private final TransactionRepository transactionRepository;
+    private final AccountRepository accountRepository;
 
     @Autowired
-    public TransactionServiceImpl(TransactionRepository transactionRepository) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, AccountRepository accountRepository) {
         this.transactionRepository = transactionRepository;
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -30,8 +37,20 @@ public class TransactionServiceImpl implements TransactionServiceInterface {
     }
 
     @Override
-    public TransactionEntity save(TransactionEntity transaction) {
-        return transactionRepository.save(transaction);
+    public TransactionEntity save(TransactionEntity transactionEntity) {
+        Optional<AccountEntity> accountOpt = accountRepository.findById(transactionEntity.getAccount().getId());
+        if (accountOpt.isPresent()) {
+            AccountEntity account = accountOpt.get();
+            double newBalance = account.getBalance() + transactionEntity.getAmount();
+            if (newBalance < 0) {
+                throw new InsufficientBalanceException("Saldo no disponible");
+            }
+            account.setBalance(newBalance);
+            accountRepository.save(account);
+            return transactionRepository.save(transactionEntity);
+        } else {
+            throw new NotFoundException("Account not found");
+        }
     }
 
     @Override

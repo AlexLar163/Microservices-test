@@ -13,9 +13,9 @@ public class AccountEntity {
     private Long id;
     private String accountNumber;
     private String accountType;
-    private Double initialBalance;
+    private Double balance;
     private String status;
-    private String clientName;
-    private String clientId;
+    private String customerName;
+    private String customerId;
 
 }

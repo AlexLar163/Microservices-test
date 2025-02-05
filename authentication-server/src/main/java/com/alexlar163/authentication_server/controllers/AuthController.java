@@ -35,6 +35,7 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
             );
         } catch (Exception e) {
+            System.out.println("Invalid username or password");
             LoggerFactory.getLogger(AuthController.class).error("Invalid username or password", e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

@@ -15,6 +15,8 @@ public class CustomRouteLocatorConfig {
                         .uri("http://localhost:8090"))
                 .route("customer-service",r -> r.path("/customer/**")
                         .uri("http://localhost:8091"))
+                .route("account-service",r -> r.path("/account/**")
+                        .uri("http://localhost:8092"))
                 .build();
     }
 

@@ -6,6 +6,7 @@ import com.alexlar163.customer_service.repositories.CustomerRepository;
 import com.alexlar163.customer_service.repositories.PersonRepository;
 import com.alexlar163.customer_service.services.interfaces.CustomerServiceInterface;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +32,7 @@ public class CustomerServiceImpl implements CustomerServiceInterface {
         return customerRepository.findById(id);
     }
 
-
+    @Transactional
     @Override
     public CustomerEntity save(CustomerEntity customer) {
         PersonEntity person = customer.getPerson();
@@ -42,6 +43,7 @@ public class CustomerServiceImpl implements CustomerServiceInterface {
         return customerRepository.save(customer);
     }
 
+    @Transactional
     @Override
     public void deleteById(Long id) {
         customerRepository.deleteById(id);

@@ -1,8 +1,8 @@
 spring:
   application:
-    name: account-service
+    name: customer-service
   datasource:
-    url: jdbc:postgresql://localhost:5434/postgres_account_service_db
+    url: jdbc:postgresql://localhost:5433/postgres_customer_service_db
     username: admin
     password: admin_password
     driver-class-name: org.postgresql.Driver
@@ -20,6 +20,4 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
 server:
-  port: 8092
-  servlet:
-    context-path: /account
+  port: 8091

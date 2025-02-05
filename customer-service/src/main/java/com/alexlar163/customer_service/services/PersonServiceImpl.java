@@ -4,6 +4,7 @@ import com.alexlar163.customer_service.entities.PersonEntity;
 import com.alexlar163.customer_service.repositories.PersonRepository;
 import com.alexlar163.customer_service.services.interfaces.PersonServiceInterface;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,11 +28,13 @@ public class PersonServiceImpl implements PersonServiceInterface {
         return personRepository.findById(id);
     }
 
+    @Transactional
     @Override
     public PersonEntity save(PersonEntity person) {
         return personRepository.save(person);
     }
 
+    @Transactional
     @Override
     public void deleteById(Long id) {
         personRepository.deleteById(id);

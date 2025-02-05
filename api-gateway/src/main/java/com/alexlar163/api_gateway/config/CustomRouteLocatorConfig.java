@@ -14,10 +14,9 @@ public class CustomRouteLocatorConfig {
                 .route("authentication-server",r -> r.path("/auth/**")
                         .uri("http://localhost:8090"))
                 .route("customer-service",r -> r.path("/customer/**")
-//                        .and().method("POST")
-//                        .and().readBody(Student.class, s -> true).filters(f -> f.filters(requestFilter, authFilter))
-//                        .and().readBody(Student.class, s -> true).filters(f -> f.filters(requestFilter, authFilter))
                         .uri("http://localhost:8091"))
                 .build();
     }
+
+
 }

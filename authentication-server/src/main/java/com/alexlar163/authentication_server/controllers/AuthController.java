@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,17 +36,12 @@ public class AuthController {
     }
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody AuthenticationRequest request) {
-        try {
             UserEntity newUser = new UserEntity();
             newUser.setUsername(request.getUsername());
             newUser.setPassword(passwordEncoder.encode(request.getPassword()));
             userServiceImpl.save(newUser);
 
             return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
-        } catch (Exception e) {
-            LoggerFactory.getLogger(AuthController.class).error("Error registering user", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error registering user");
-        }
     }
 
     @PostMapping("/login")

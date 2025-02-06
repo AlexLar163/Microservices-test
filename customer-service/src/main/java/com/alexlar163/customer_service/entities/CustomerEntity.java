@@ -25,5 +25,5 @@ public class CustomerEntity {
     @Column(nullable = false)
     private String password;
 
-    private boolean status;
+    private String state;
 }

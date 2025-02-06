@@ -50,7 +50,7 @@ public class CustomerController {
         customer.setPerson(person);
         customer.setCustomerId("C" + UUID.randomUUID().toString().replace("-", ""));
         customer.setPassword(customerDto.getPassword());
-        customer.setStatus(customerDto.isState());
+        customer.setState("ACTIVE");
         customer = customerServiceImpl.save(customer);
         return ResponseEntity.ok(customer).getBody();
 

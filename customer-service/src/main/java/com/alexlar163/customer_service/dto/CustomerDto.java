@@ -5,5 +5,5 @@ import lombok.Data;
 public class CustomerDto extends PersonDto{
     private String customerId;
     private String password;
-    private boolean state;
+    private String state;
 }

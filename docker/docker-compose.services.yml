@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  authentication-server:
+    image: authentication-server:latest
+    container_name: authentication-server
+    build:
+      context: ../authentication-server
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8090"
+    restart: always
+    depends_on:
+      - service-registry
+      - postgres-authentication
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-authentication-db:5432/postgres_auth_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin_password
+
+  customer-service:
+    image: customer-service:latest
+    container_name: customer-service
+    build:
+      context: ../customer-service
+      dockerfile: Dockerfile
+    ports:
+      - "8091:8091"
+    restart: always
+    depends_on:
+      - service-registry
+      - postgres-customer
+      - kafka
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-customer-service-db:5433/postgres_customer_service_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin_password
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+  account-service:
+    image: account-service:latest
+    container_name: account-service
+    build:
+      context: ../account-service
+      dockerfile: Dockerfile
+    ports:
+      - "8092:8092"
+    restart: always
+    depends_on:
+      - service-registry
+      - postgres-account
+      - kafka
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-account-service-db:5434/postgres_account_service_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin_password
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092

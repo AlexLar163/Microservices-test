@@ -12,7 +12,7 @@ spring:
       ddl-auto: update
     show-sql: true
   kafka:
-    bootstrap-servers: http://localhost:5432/
+    bootstrap-servers: localhost:9092
     consumer:
       group-id: account-service
       auto-offset-reset: earliest

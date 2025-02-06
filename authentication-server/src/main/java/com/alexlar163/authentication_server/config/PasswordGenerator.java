@@ -7,6 +7,6 @@ public class PasswordGenerator {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String rawPassword = "admin_password";
         String encodedPassword = encoder.encode(rawPassword);
-        System.out.println(encodedPassword); // Esto te dará el hash encriptado
+        System.out.println(encodedPassword);
     }
 }

@@ -4,6 +4,7 @@ import com.alexlar163.account_service.entities.TransactionEntity;
 import com.alexlar163.account_service.exceptions.InsufficientBalanceException;
 import com.alexlar163.account_service.services.TransactionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,7 @@ public class TransactionController {
     @GetMapping("/{id}")
     public ResponseEntity<TransactionEntity> getTransactionById(@PathVariable Long id) {
         Optional<TransactionEntity> transaction = transactionService.findById(id);
+
         return transaction.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -43,9 +45,10 @@ public class TransactionController {
     }
 
     @PutMapping("/{id}")
-    public TransactionEntity updateTransaction(@PathVariable Long id, @RequestBody TransactionEntity transactionDetails) {
+    public ResponseEntity<TransactionEntity> updateTransaction(@PathVariable Long id, @RequestBody TransactionEntity transactionDetails) {
         transactionDetails.setId(id);
-        return transactionService.save(transactionDetails);
+        TransactionEntity updatedTransaction = transactionService.save(transactionDetails);
+        return ResponseEntity.ok(updatedTransaction);
     }
 
     @DeleteMapping("/{id}")
@@ -54,8 +57,8 @@ public class TransactionController {
         if (transaction.isPresent()) {
             transactionService.deleteById(id);
             return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
         }
+
+        return ResponseEntity.notFound().build();
     }
 }

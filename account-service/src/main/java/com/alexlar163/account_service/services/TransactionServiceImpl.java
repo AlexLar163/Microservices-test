@@ -39,18 +39,17 @@ public class TransactionServiceImpl implements TransactionServiceInterface {
     @Override
     public TransactionEntity save(TransactionEntity transactionEntity) {
         Optional<AccountEntity> accountOpt = accountRepository.findById(transactionEntity.getAccount().getId());
-        if (accountOpt.isPresent()) {
-            AccountEntity account = accountOpt.get();
-            double newBalance = account.getBalance() + transactionEntity.getAmount();
-            if (newBalance < 0) {
-                throw new InsufficientBalanceException("Saldo no disponible");
-            }
-            account.setBalance(newBalance);
-            accountRepository.save(account);
-            return transactionRepository.save(transactionEntity);
-        } else {
+        if (accountOpt.isEmpty()) {
             throw new NotFoundException("Account not found");
         }
+        AccountEntity account = accountOpt.get();
+        double newBalance = account.getBalance() + transactionEntity.getAmount();
+        if (newBalance < 0) {
+            throw new InsufficientBalanceException("Saldo no disponible");
+        }
+        account.setBalance(newBalance);
+        accountRepository.save(account);
+        return transactionRepository.save(transactionEntity);
     }
 
     @Override

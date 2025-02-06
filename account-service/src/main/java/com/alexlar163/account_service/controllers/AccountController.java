@@ -47,9 +47,11 @@ public class AccountController {
         Optional<AccountEntity> account = accountService.findById(id);
         if (account.isPresent()) {
             accountService.deleteById(id);
+
             return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
         }
+
+        return ResponseEntity.notFound().build();
+
     }
 }
